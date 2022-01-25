@@ -47,6 +47,7 @@ class InAppProductQueryRequest: NSObject, InAppProductRequest, SKProductsRequest
 
     deinit {
         request.delegate = nil
+        request.cancel()
     }
     init(productIds: Set<String>, callback: @escaping InAppProductRequestCallback) {
 
@@ -78,10 +79,11 @@ class InAppProductQueryRequest: NSObject, InAppProductRequest, SKProductsRequest
     }
 
     func requestDidFinish(_ request: SKRequest) {
-
+        request.cancel()
     }
 
     func request(_ request: SKRequest, didFailWithError error: Error) {
+        request.cancel()
         performCallback(RetrieveResults(retrievedProducts: Set<SKProduct>(), invalidProductIDs: Set<String>(), error: error))
     }
     
